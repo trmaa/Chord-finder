@@ -1,0 +1,69 @@
+#!/bin/bash
+
+if_file() {
+    path="$1"
+    callback="$2"
+
+    if [ -f "$path" ]; then
+        $callback
+    fi
+}
+
+# paths
+SOURCE="./src/*.cpp"
+OUTPUT="./bin/app"
+FLAGS="-lrtmidi"
+INCLUDE="./include/"
+LIBS="./lib/"
+
+# callbacks
+clean() {
+    if_file "$OUTPUT" "rm -f $OUTPUT"
+}
+
+build() {
+    g++ $SOURCE -o $OUTPUT -I"$LIBS" -I"$INCLUDE" $FLAGS
+}
+
+run() {
+    "$OUTPUT"
+}
+
+init() {
+    echo "Are you sure? (N/y): "
+    read ansr
+
+    if [ "$ansr" != "y" ]; then
+        return
+    fi
+
+    find . ! -name "compile" ! -name "." ! -name ".." -exec rm -rf {} +
+
+    git init
+    git branch -M main
+
+    mkdir src
+    mkdir include
+    mkdir lib
+    mkdir bin
+
+	touch src/main.cpp
+    echo "int main() {}" > src/main.cpp
+
+    bear -- ./compile build
+}
+
+save() {
+    git add .
+    git commit -m "$1"
+}
+
+#main
+main() {
+    for callback in "$@"; do
+        $callback
+    done
+}
+
+# callbacks meant to be clean, build, or run
+main "$@"

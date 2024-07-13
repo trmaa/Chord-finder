@@ -1,0 +1,16 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-I./lib/",
+      "-I./include/",
+      "-o",
+      "./bin/asteroids",
+      "./src/main.cpp"
+    ],
+    "directory": "/home/pablo/MIDI",
+    "file": "/home/pablo/MIDI/src/main.cpp",
+    "output": "/home/pablo/MIDI/bin/asteroids"
+  }
+]
